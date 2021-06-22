@@ -1,0 +1,21 @@
+{
+  "name": "phat-wallet",
+  "version": "1.0.0",
+  "description": "Discord bot",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "Reece",
+    "Mathieson"
+  ],
+  "author": "Reece Mathieson, Swoopy",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.6.1",
+    "discord.js": "^12.5.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.7"
+  }
+}
