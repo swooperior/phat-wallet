@@ -151,24 +151,62 @@ class DBWrapper{
             return false;
         });  
     }
+
+    //Helper function
+    static async giveExp(tag, amount){
+        var user = await this.getUser(tag);
+        console.log("GIVING EXP!");
+        var p = new Promise(function(resolve, reject){
+            var sql = `UPDATE users SET exp = exp+${amount} where id = ${user.id}`;
+            db.query(
+                sql, 
+                function(err, rows){
+                    console.log                                                
+                    if(err == null){
+                        resolve(true);
+                    }else{
+                        reject(new Error(err));
+                    }
+                }
+            )}
+        );
+        return p.then(function(results){
+            return true;
+        })
+        .catch(function(err){
+            console.log("Promise rejection error: "+err);
+            return false;
+        });  
+    }
       
     /*
     *
     * Registers the user in the database; Should be called onGuildJoin
     */
-    static signUp(tag){
-        var sql = `INSERT INTO users(tag) values('${tag}');
-        SET @last_id_in_table1 = LAST_INSERT_ID();
-        INSERT INTO inventory(user_id) values(@last_id_table1)`;
-        var res = db.query(sql,async (err,results)=>{
+    static async signUp(tag){
+        var sql = `INSERT INTO users(tag) values('${tag}');SET @last_id_in_table1 = LAST_INSERT_ID();INSERT INTO inventory(user_id, wallet) values(@last_id_in_table1, 100);`;
         var msg;
-            if(err){
-                console.log(err.sqlMessage);
-                msg = err.sqlMessage;
-            }
-            return results;
+        var p = new Promise(function(resolve, reject){ 
+            db.query(sql, async (err,results)=>{
+                
+                if(err == null){
+                    resolve(true);
+                }else{
+                    reject(new Error(err));
+                }
+                // if(err){
+                //     console.log(err.sqlMessage+'\n\n');
+                //     msg = err.sqlMessage;
+                // }
+            });
         });
-        return res || msg;
+        return p.then(function(results){
+            return true;
+        })
+        .catch(function(err){
+            console.log("Promise rejection error: "+err);
+            return false;
+        }); 
     }
 
 

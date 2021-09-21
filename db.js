@@ -7,6 +7,7 @@ const connection = mysql.createConnection({
     user     : config.dbUser,
     password : config.dbPassword,
     dateStrings: "true",
+    multipleStatements: true,
     debug    : config.dev
 });
 
